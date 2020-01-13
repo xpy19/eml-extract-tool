@@ -4,6 +4,7 @@
 import email
 import logging
 import os
+import uuid
 
 import click
 
@@ -19,7 +20,7 @@ def _extract_eml(file, output_dir):
             if not part.is_multipart():
                 name = part.get_filename()
                 if name:
-                    out_file = os.path.abspath(os.path.join(output_dir, name))
+                    out_file = os.path.abspath(os.path.join(output_dir, uuid.uuid4().hex[:8] + name))
                     with open(out_file, 'wb') as o_stream:
                         o_stream.write(part.get_payload(decode=True))
                     logging.info('write attach file to %s', out_file)
